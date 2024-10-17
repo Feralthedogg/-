@@ -11,7 +11,7 @@ KoreanDetector는 텍스트에서 한국어와 영어를 감지하고, 알 수 �
 
 ## 설치 방법
 
-`KoreanDetector`는 파이썬 3.x 환경에서 동작합니다. 설치할 필요 없이 `KoreanDetector.py` 파일을 프로젝트에 추가한 후 사용하세요.
+`KoreanDetector`는 파이썬 3.x 환경에서 동작합니다. 설치할 필요 없이 `korean_detector.py` 파일을 프로젝트에 추가한 후 사용하세요.
 
 ## 사용법
 
@@ -21,7 +21,7 @@ KoreanDetector는 텍스트에서 한국어와 영어를 감지하고, 알 수 �
 
 ```python
 import asyncio
-from KoreanDetector import KoreanDetector
+from korean_detector import KoreanDetector
 
 detector = KoreanDetector(korean_message="ko", english_message="en", unknown_message=None)
 
@@ -39,7 +39,7 @@ asyncio.run(process_single_text())
 
 ```python
 import asyncio
-from KoreanDetector import KoreanDetector
+from korean_detector import KoreanDetector
 
 detector = KoreanDetector(korean_message="ko", english_message="en", unknown_message=None)
 
