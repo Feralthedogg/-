@@ -6,7 +6,7 @@ from english_keywords import english_keywords
 class KoreanDetector:
     korean_pattern = re.compile(r'[가-힣]')
     english_pattern = re.compile(r'[a-zA-Z]')
-    unknown_pattern = re.compile(r'[^가-힣a-zA-Z]')
+    mention_pattern = re.compile(r'<@!?[0-9]+>')
 
     korean_particles = {
         '이', '가', '을', '를', '에', '에서', '으로', '로', '와', '과', '하고', '의',
@@ -37,13 +37,15 @@ class KoreanDetector:
             raise TypeError("Input must be a string or a list of strings.")
 
     async def _detect_single_language(self, text):
-        if text.isdigit():
+        text_cleaned = re.sub(r'[^\w]', '', text)
+
+        if text_cleaned.isdigit():
             return self.korean_message
 
-        text_cleaned = re.sub(r'[\s]+', '', text)
+        text_without_numbers = re.sub(r'\d+', '', text_cleaned)
 
-        korean_count = len(re.findall(self.korean_pattern, text_cleaned))
-        english_count = len(re.findall(self.english_pattern, text_cleaned))
+        korean_count = len(re.findall(self.korean_pattern, text_without_numbers))
+        english_count = len(re.findall(self.english_pattern, text_without_numbers))
 
         total_count = korean_count + english_count
         if total_count == 0:
@@ -57,11 +59,11 @@ class KoreanDetector:
         elif korean_ratio >= 0.8:
             return self.korean_message
 
-        korean_weight = self._calculate_weight(text_cleaned, self.korean_particles, korean_keywords, ratio=korean_ratio)
-        english_weight = self._calculate_weight(text_cleaned, self.english_particles, english_keywords, ratio=english_ratio)
+        korean_weight = self._calculate_weight(text_without_numbers, self.korean_particles, korean_keywords, ratio=korean_ratio)
+        english_weight = self._calculate_weight(text_without_numbers, self.english_particles, english_keywords, ratio=english_ratio)
 
-        korean_weight += self._check_end_of_sentence(text_cleaned, self.korean_pattern)
-        english_weight += self._check_end_of_sentence(text_cleaned, self.english_pattern)
+        korean_weight += self._check_end_of_sentence(text_without_numbers, self.korean_pattern)
+        english_weight += self._check_end_of_sentence(text_without_numbers, self.english_pattern)
 
         if korean_weight > english_weight:
             return self.korean_message
