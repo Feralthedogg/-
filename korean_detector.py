@@ -74,8 +74,8 @@ class KoreanDetector:
             else:
                 return self.unknown_message
 
-        korean_weight = self._calculate_weight(text_without_numbers, self.korean_particles, korean_keywords, ratio=korean_ratio)
-        english_weight = self._calculate_weight(text_without_numbers, self.english_particles, english_keywords, ratio=english_ratio)
+        korean_weight = self._calculate_weight(text_without_numbers, self.korean_particles, self.korean_keywords, ratio=korean_ratio)
+        english_weight = self._calculate_weight(text_without_numbers, self.english_particles, self.english_keywords, ratio=english_ratio)
 
         korean_weight += self._check_end_of_sentence(text_without_numbers, self.korean_pattern)
         english_weight += self._check_end_of_sentence(text_without_numbers, self.english_pattern)
