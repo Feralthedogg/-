@@ -34,6 +34,9 @@ class KoreanDetector:
         self.english_message = english_message
         self.unknown_message = unknown_message
 
+        self.korean_keywords = korean_keywords
+        self.english_keywords = english_keywords
+
     async def detect_language(self, text):
         if isinstance(text, str):
             return await self._detect_single_language(text)
